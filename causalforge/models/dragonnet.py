@@ -154,7 +154,7 @@ class DragonNet(Model):
         
         if 'use_adam' in self.params and self.params['use_adam']: 
             self.model.compile(
-                optimizer=Adam(lr=self.params['adam_learning_rate']), loss=loss, metrics=metrics
+                optimizer=Adam(learning_rate=self.params['adam_learning_rate']), loss=loss, metrics=metrics
             )
 
             adam_callbacks = [
@@ -198,7 +198,7 @@ class DragonNet(Model):
                 ),
             ]
             self.model.compile(
-                optimizer=SGD(lr=self.params['learning_rate'], momentum=self.params['momentum'], 
+                optimizer=SGD(learning_rate=self.params['learning_rate'], momentum=self.params['momentum'], 
                               nesterov=True),
                 loss=loss,
                 metrics=metrics,
