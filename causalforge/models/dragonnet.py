@@ -47,7 +47,7 @@ class DragonNet(Model):
             'momentum': 0.9,
             'use_adam': True,
             'adam_epochs':30, 
-            'adam_learning_rate': 1e-3
+            'adam_learning_rate': 1e-3,
             'patience': 2
         }
         
