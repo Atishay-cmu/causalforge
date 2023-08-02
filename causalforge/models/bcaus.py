@@ -96,10 +96,10 @@ class BCAUS_DR(Model):
         control_ycf_pred = self.estimator_t.predict(X[control_idx,:])
     
         treatment_ite = (y[treated_idx]/(scores[treated_idx] + self.params['eps'])
-                            -treatment_yf_pred*(1 - scores[treated_idx])/(scores[treated_idx] + self.params['eps'])
+                            -treatment_yf_pred*(1 - scores[treated_idx] + self.params['eps'])/(scores[treated_idx] + self.params['eps'])
                             -treatment_ycf_pred)
         control_ite = control_ycf_pred-(y[control_idx]/(1 - scores[control_idx] + self.params['eps'])
-                                        -control_yf_pred*scores[control_idx]/(1 - scores[control_idx] + self.params['eps']))
+                                        -control_yf_pred*(scores[control_idx] + self.params['eps'])/(1 - scores[control_idx] + self.params['eps']))
         
         est_ate = np.mean(np.array(list(treatment_ite)+list(control_ite)))
         
