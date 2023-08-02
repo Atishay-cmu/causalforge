@@ -23,6 +23,10 @@ class BCAUS_DR(Model):
                                        params,
                                        problem_type=PROBLEM_TYPE.PROPENSITY_ESTIMATION, 
                                        multiple_treatments=False)
+        if 'n_jobs' not in params:
+            params['n_jobs'] = -1
+        if 'eps' not in params:
+            params['eps'] = 1e-10
         self.params = params
     
     
@@ -42,8 +46,8 @@ class BCAUS_DR(Model):
         
         # Fit estimators for DR
         params={"alpha":[0.001,0.01,0.1]}
-        self.estimator_t = GridSearchCV(Ridge(), param_grid=params, cv=3, n_jobs=3)
-        self.estimator_c = GridSearchCV(Ridge(), param_grid=params, cv=3, n_jobs=3)
+        self.estimator_t = GridSearchCV(Ridge(), param_grid=params, cv=3, n_jobs=self.params['n_jobs'])
+        self.estimator_c = GridSearchCV(Ridge(), param_grid=params, cv=3, n_jobs=self.params['n_jobs'])
         self.estimator_t.fit(X[treated_idx,:], y[treated_idx])
         self.estimator_c.fit(X[control_idx,:], y[control_idx]) 
     
