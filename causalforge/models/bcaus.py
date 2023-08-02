@@ -80,7 +80,8 @@ class BCAUS_DR(Model):
             (np.array): treatment effect vector
         """
         scores = self.bcaus.predict_proba(X)[:,1]
-        weights = (treatment / scores + (1 - treatment) / (1 - scores))
+        print(scores)
+        weights = (treatment / (scores + self.params['eps']) + (1 - treatment) / (1 - scores + self.params['eps']))
         
         treated_idx=np.where(treatment==1)[0]
         control_idx=np.where(treatment==0)[0]
