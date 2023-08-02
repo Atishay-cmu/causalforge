@@ -44,6 +44,8 @@ class BCAUS_DR(Model):
         params={"alpha":[0.001,0.01,0.1]}
         self.estimator_t = GridSearchCV(Ridge(), param_grid=params, cv=3, n_jobs=3)
         self.estimator_c = GridSearchCV(Ridge(), param_grid=params, cv=3, n_jobs=3)
+        print(X.shape, treated_idx, y.shape)
+        print(y)
         self.estimator_t.fit(X[treated_idx,:], y[treated_idx])
         self.estimator_c.fit(X[control_idx,:], y[control_idx]) 
     
