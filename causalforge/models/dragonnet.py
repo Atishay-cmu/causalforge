@@ -48,6 +48,7 @@ class DragonNet(Model):
             'use_adam': True,
             'adam_epochs':30, 
             'adam_learning_rate': 1e-3
+            'patience': 2
         }
         
         for k in params:
@@ -159,7 +160,7 @@ class DragonNet(Model):
 
             adam_callbacks = [
                 TerminateOnNaN(),
-                EarlyStopping(monitor="val_loss", patience=2, min_delta=0.0),
+                EarlyStopping(monitor="val_loss", patience=params['patience'], min_delta=0.0),
                 ReduceLROnPlateau(
                     monitor="loss",
                     factor=0.5,
@@ -185,7 +186,7 @@ class DragonNet(Model):
         else:
             sgd_callbacks = [
                 TerminateOnNaN(),
-                EarlyStopping(monitor="val_loss", patience=40, min_delta=0.0),
+                EarlyStopping(monitor="val_loss", patience=params['patience'], min_delta=0.0),
                 ReduceLROnPlateau(
                     monitor="loss",
                     factor=0.5,
