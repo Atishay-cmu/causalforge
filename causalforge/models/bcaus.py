@@ -146,7 +146,8 @@ class BCAUS(Propensity_Estimator,BaseEstimator, ClassifierMixin):
             "balance_threshold": 0.1, 
             "device": 'cpu', 
             "verbose": False, 
-            "logger": None
+            "logger": None,
+            "log_epoch": 50
         }
         
         for k in params:
@@ -242,7 +243,7 @@ class BCAUS(Propensity_Estimator,BaseEstimator, ClassifierMixin):
                     break
 
             if self.verbose:
-                if i % 50 == 0:
+                if i % self.params['log_epoch'] == 0:
                     self.logger.info('Epoch ={}: Propensity Loss ={}, Covariate Loss ={}, Balanced covs ={}'
                                      .format(i, prop_loss[-1], cov_loss[-1], num_balanced[-1]))
 
