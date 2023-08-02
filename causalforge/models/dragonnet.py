@@ -160,7 +160,7 @@ class DragonNet(Model):
 
             adam_callbacks = [
                 TerminateOnNaN(),
-                EarlyStopping(monitor="val_loss", patience=params['patience'], min_delta=0.0),
+                EarlyStopping(monitor="val_loss", patience=self.params['patience'], min_delta=0.0),
                 ReduceLROnPlateau(
                     monitor="loss",
                     factor=0.5,
