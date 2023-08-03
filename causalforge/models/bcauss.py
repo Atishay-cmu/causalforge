@@ -164,7 +164,7 @@ class BCAUSS(Model):
         start_time = time.time()
         if self.params['optim'] == 'adam':
             self.model.compile(
-            optimizer=Adam(lr=self.params['learning_rate']))
+            optimizer=Adam(learning_rate=self.params['learning_rate']))
             adam_callbacks = [
                 TerminateOnNaN(),
                 EarlyStopping(monitor='val_loss', patience=40, min_delta=0., restore_best_weights=True),
@@ -188,7 +188,7 @@ class BCAUSS(Model):
                                   min_delta=0., cooldown=0, min_lr=0)
             ]
         
-            self.model.compile(optimizer=SGD(lr=self.params['learning_rate'], momentum=self.params['momentum'], nesterov=True))
+            self.model.compile(optimizer=SGD(learning_rate=self.params['learning_rate'], momentum=self.params['momentum'], nesterov=True))
             dummy = np.zeros((X.shape[0],))
             self.history = self.model.fit([X, y, treatment], dummy, callbacks=sgd_callbacks,
                           validation_split=self.params['val_split'],
