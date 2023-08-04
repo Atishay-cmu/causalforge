@@ -217,6 +217,7 @@ class Ganite_Model(nn.Module):
         X: torch.Tensor,
         Treatments: torch.Tensor,
         Y: torch.Tensor,
+        verbose = True,
         dim_hidden: int = 100,
         alpha: float = 0.1,
         beta: float = 0,
@@ -262,6 +263,7 @@ class Ganite_Model(nn.Module):
         self.depth = depth
         self.num_iterations = num_iterations
         self.num_discr_iterations = num_discr_iterations
+        self.verbose = verbose
 
         binary_y = len(np.unique(Y.cpu().numpy())) == 2
         # Layers
@@ -356,7 +358,7 @@ class Ganite_Model(nn.Module):
 
             G_loss = G_loss_R + self.alpha * G_loss_GAN
 
-            if it % 100 == 0:
+            if it % 100 == 0 and self.verbose:
                 print(f"Generator loss epoch {it}: {D_loss} {G_loss}")
                 if torch.isnan(D_loss).any():
                     raise RuntimeError("counterfactual_discriminator generated NaNs")
@@ -366,7 +368,7 @@ class Ganite_Model(nn.Module):
 
             G_loss.backward()
             self.DG_solver.step()
-
+        
         # Train I and ID
         for it in range(self.num_iterations):
             self.I_solver.zero_grad()
@@ -394,12 +396,13 @@ class Ganite_Model(nn.Module):
             )
             I_loss = I_loss1 + self.beta * I_loss2
 
-            if it % 100 == 0:
+            if it % 100 == 0 and self.verbose:
                 print(f"Inference loss epoch {it}: {I_loss}")
 
             I_loss.backward()
             self.I_solver.step()
-
+            
+        print(f"Train loss epoch: {D_loss} {G_loss} {I_loss} ")
         return self
 
     def forward(self, X: torch.Tensor) -> torch.Tensor:
