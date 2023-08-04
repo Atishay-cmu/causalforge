@@ -217,7 +217,7 @@ class Ganite_Model(nn.Module):
         X: torch.Tensor,
         Treatments: torch.Tensor,
         Y: torch.Tensor,
-        verbose = True,
+        verbose = False,
         dim_hidden: int = 100,
         alpha: float = 0.1,
         beta: float = 0,
